@@ -23,7 +23,7 @@ function isEmail(value: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
 
-export default function LoginPage() {
+export default function LoginClient() {
   const router = useRouter();
   const search = useSearchParams();
   const next = search.get("next") || "/dashboard";
