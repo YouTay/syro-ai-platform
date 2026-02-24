@@ -140,35 +140,36 @@ export default function Chat({ agentId, systemPrompt }: { agentId: number; syste
   }
 
   return (
-    <div className="grid gap-4 lg:grid-cols-[1fr_360px]">
-      <Card className="rounded-2xl border-slate-200 shadow-soft2 overflow-hidden">
-        <CardContent className="p-0">
-          <div className="border-b border-slate-200 bg-white px-5 py-4 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="h-9 w-9 rounded-2xl bg-gradient-to-br from-[#7C3AED] to-[#2563EB] shadow-soft" />
+    <div className="grid gap-6 lg:grid-cols-[1fr_380px]">
+      <Card className="rounded-2xl border border-slate-200 shadow-soft2 overflow-hidden">
+        <CardContent className="p-0 flex flex-col h-full">
+          <div className="border-b border-slate-200 bg-white px-6 py-4 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="h-10 w-10 rounded-2xl bg-gradient-to-br from-[#7C3AED] to-[#2563EB] shadow-soft flex items-center justify-center">
+                <Sparkles className="h-5 w-5 text-white" />
+              </div>
               <div>
-                <div className="text-sm font-medium leading-tight">Chat</div>
+                <div className="text-sm font-semibold text-slate-900 leading-tight">Chat with Agent</div>
                 <div className="text-xs text-slate-500 leading-tight">
-                  Memory: Azure Table Storage • <span className="font-medium">{conversationId}</span>
+                  Conversation ID: <span className="font-mono text-[10px]">{conversationId}</span>
                 </div>
               </div>
             </div>
 
-            <div className="flex items-center gap-2">
-              <Button variant="outline" className="rounded-xl" onClick={loadHistory} disabled={loadingHistory || pending}>
-                <RefreshCcw className="h-4 w-4 mr-2" />
-                Refresh
-              </Button>
-              <div className="text-xs text-slate-500 flex items-center gap-2">
-                <Sparkles className="h-4 w-4 text-[#7C3AED]" />
-                Syro AI
-              </div>
-            </div>
+            <Button 
+              variant="outline" 
+              className="rounded-xl border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors" 
+              onClick={loadHistory} 
+              disabled={loadingHistory || pending}
+            >
+              <RefreshCcw className="h-4 w-4 mr-2" />
+              Refresh
+            </Button>
           </div>
 
-          <div className="h-[520px] overflow-y-auto bg-gradient-to-b from-white to-slate-50 px-5 py-5 space-y-3">
+          <div className="h-[540px] overflow-y-auto bg-gradient-to-b from-white via-white to-[#fafbfc] px-6 py-5 space-y-4 flex-1">
             {loadingHistory && (
-              <div className="text-sm text-slate-500">Loading history…</div>
+              <div className="text-sm text-slate-500 text-center py-8">Loading conversation…</div>
             )}
 
             {!loadingHistory &&
@@ -176,18 +177,18 @@ export default function Chat({ agentId, systemPrompt }: { agentId: number; syste
                 <div key={m.id} className={cn("flex", m.role === "user" ? "justify-end" : "justify-start")}>
                   <div
                     className={cn(
-                      "max-w-[85%] rounded-2xl px-4 py-3 text-sm shadow-soft border",
+                      "max-w-[75%] rounded-2xl px-4 py-3 text-sm shadow-soft border",
                       m.role === "user"
-                        ? "bg-slate-900 text-white border-slate-900"
+                        ? "bg-gradient-to-r from-[#7C3AED] to-[#2563EB] text-white border-none shadow-soft2"
                         : m.role === "system"
-                        ? "bg-slate-50 text-slate-700 border-slate-200"
+                        ? "bg-slate-100 text-slate-700 border-slate-200"
                         : "bg-white text-slate-900 border-slate-200"
                     )}
                   >
                     <div className="whitespace-pre-wrap leading-relaxed">{m.content}</div>
                     {m.timestamp && (
-                      <div className="mt-2 text-[11px] text-slate-400">
-                        {new Date(m.timestamp).toLocaleString()}
+                      <div className={cn("mt-2 text-[11px]", m.role === "user" ? "text-white/70" : "text-slate-400")}>
+                        {new Date(m.timestamp).toLocaleTimeString()}
                       </div>
                     )}
                   </div>
@@ -196,10 +197,10 @@ export default function Chat({ agentId, systemPrompt }: { agentId: number; syste
 
             {pending && (
               <div className="flex justify-start">
-                <div className="max-w-[85%] rounded-2xl px-4 py-3 text-sm shadow-soft border bg-white text-slate-900 border-slate-200">
-                  <div className="flex items-center gap-2 text-slate-500">
+                <div className="max-w-[75%] rounded-2xl px-4 py-3 text-sm shadow-soft border bg-white text-slate-900 border-slate-200">
+                  <div className="flex items-center gap-2 text-slate-600">
                     <span className="inline-block h-2 w-2 rounded-full bg-[#7C3AED] animate-pulse" />
-                    Thinking…
+                    Agent is thinking…
                   </div>
                 </div>
               </div>
@@ -208,19 +209,19 @@ export default function Chat({ agentId, systemPrompt }: { agentId: number; syste
             <div ref={endRef} />
           </div>
 
-          <div className="border-t border-slate-200 bg-white p-4">
+          <div className="border-t border-slate-200 bg-white p-5">
             <div className="flex gap-3">
               <Textarea
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={onKeyDown}
-                placeholder="Type a message… (Enter = send, Shift+Enter = newline)"
-                className="min-h-[44px] max-h-[120px] resize-none rounded-2xl"
+                placeholder="Ask the agent anything… (Enter to send, Shift+Enter for new line)"
+                className="min-h-[44px] max-h-[120px] resize-none rounded-xl border-slate-200 bg-slate-50 text-sm"
               />
               <Button
                 onClick={() => void send()}
                 disabled={!canSend}
-                className="rounded-2xl bg-gradient-to-r from-[#7C3AED] to-[#2563EB] shadow-soft hover:opacity-95"
+                className="rounded-xl bg-gradient-to-r from-[#7C3AED] to-[#2563EB] text-white font-medium shadow-soft2 hover:shadow-lg hover:opacity-90 transition-all self-end flex-shrink-0"
               >
                 <Send className="h-4 w-4 mr-2" />
                 Send
@@ -230,11 +231,13 @@ export default function Chat({ agentId, systemPrompt }: { agentId: number; syste
         </CardContent>
       </Card>
 
-      <Card className="rounded-2xl border-slate-200 shadow-soft2 h-fit">
-        <CardContent className="p-5 space-y-3">
-          <div className="text-sm font-medium">System Prompt</div>
-          <div className="text-xs text-slate-500">Saved once as role=system when the conversation is created</div>
-          <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700 whitespace-pre-wrap">
+      <Card className="rounded-2xl border border-slate-200 shadow-soft2 h-fit">
+        <CardContent className="p-6 space-y-4">
+          <div>
+            <div className="text-sm font-semibold text-slate-900 mb-1">System Prompt</div>
+            <div className="text-xs text-slate-500">Defines the agent's personality and behavior</div>
+          </div>
+          <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 text-xs text-slate-700 whitespace-pre-wrap max-h-[200px] overflow-y-auto leading-relaxed font-mono">
             {systemPrompt}
           </div>
         </CardContent>

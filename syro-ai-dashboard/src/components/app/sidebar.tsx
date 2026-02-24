@@ -59,12 +59,15 @@ export default function Sidebar() {
         })}
       </nav>
 
-      <div className="mt-auto p-4">
-        <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-white to-slate-50 p-4 shadow-soft">
+      <div className="mt-auto p-4 space-y-4 border-t border-slate-200">
+        <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-white to-slate-50 p-4 shadow-soft2">
           <div className="text-sm font-medium">Tip</div>
           <div className="text-xs text-slate-500 mt-1">
             Erstelle einen Agenten mit klarer System-Prompt, dann teste ihn im Chat.
           </div>
+        </div>
+        <div className="text-xs text-slate-400 text-center">
+          Made by Youssef Tayachi
         </div>
       </div>
     </aside>

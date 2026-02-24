@@ -60,54 +60,61 @@ export default function CreateAgentDialog({ onCreated }: { onCreated: () => void
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="rounded-xl bg-gradient-to-r from-[#7C3AED] to-[#2563EB] shadow-soft hover:opacity-95">
+        <Button className="rounded-xl bg-gradient-to-r from-[#7C3AED] to-[#2563EB] text-white font-medium shadow-soft2 hover:shadow-lg hover:opacity-90 transition-all">
           Create Agent
         </Button>
       </DialogTrigger>
 
       <DialogContent className="rounded-2xl sm:max-w-lg">
         <DialogHeader>
-          <DialogTitle>Create Agent</DialogTitle>
-          <DialogDescription>
-            Definiere Name & System Prompt. Der Prompt steuert Persönlichkeit & Verhalten.
+          <DialogTitle className="text-xl">Create New Agent</DialogTitle>
+          <DialogDescription className="text-slate-600">
+            Configure a new AI agent with custom name and system prompt to define its personality and behavior.
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-4">
+        <div className="space-y-5">
           <div className="space-y-2">
-            <Label htmlFor="name">Name</Label>
+            <Label htmlFor="name" className="text-sm font-medium">Agent Name</Label>
             <Input
               id="name"
-              placeholder="e.g. Support Copilot"
+              placeholder="e.g., Customer Support Bot"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              className="rounded-xl border-slate-200 bg-slate-50"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="prompt">System Prompt</Label>
+            <Label htmlFor="prompt" className="text-sm font-medium">System Prompt</Label>
             <Textarea
               id="prompt"
-              className="min-h-[140px]"
+              className="min-h-[140px] rounded-xl border-slate-200 bg-slate-50"
               value={systemPrompt}
               onChange={(e) => setSystemPrompt(e.target.value)}
+              placeholder="Define the agent's role, personality, constraints, and output format..."
             />
             <div className="text-xs text-slate-500">
-              Tip: Keep it focused. Add role, constraints, output format.
+              💡 Keep it focused. Include role, personality, constraints, and output format.
             </div>
           </div>
         </div>
 
         <DialogFooter className="gap-2 sm:gap-0">
-          <Button variant="outline" className="rounded-xl" onClick={() => setOpen(false)} disabled={pending}>
+          <Button 
+            variant="outline" 
+            className="rounded-xl border-slate-200 text-slate-600 hover:bg-slate-50" 
+            onClick={() => setOpen(false)} 
+            disabled={pending}
+          >
             Cancel
           </Button>
           <Button
-            className="rounded-xl bg-gradient-to-r from-[#7C3AED] to-[#2563EB] shadow-soft hover:opacity-95"
+            className="rounded-xl bg-gradient-to-r from-[#7C3AED] to-[#2563EB] text-white font-medium shadow-soft2 hover:shadow-lg hover:opacity-90 transition-all"
             onClick={create}
             disabled={pending}
           >
-            {pending ? "Creating..." : "Create"}
+            {pending ? "Creating..." : "Create Agent"}
           </Button>
         </DialogFooter>
       </DialogContent>
