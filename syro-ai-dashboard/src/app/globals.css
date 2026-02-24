@@ -1,40 +1,6 @@
 @import "tailwindcss";
 
-@theme inline {
-  --font-sans: 'Inter', 'Inter Fallback';
-  
-  animation: {
-    fadeUp: "fadeUp 0.6s ease-out forwards",
-    fadeIn: "fadeIn 0.5s ease-out forwards",
-    slideUp: "slideUp 0.5s ease-out forwards",
-    shimmer: "shimmer 2s infinite",
-    glow: "glow 3s ease-in-out infinite",
-  }
-  
-  keyframes: {
-    fadeUp: {
-      "0%": { opacity: "0", transform: "translateY(20px)" },
-      "100%": { opacity: "1", transform: "translateY(0)" },
-    }
-    fadeIn: {
-      "0%": { opacity: "0" },
-      "100%": { opacity: "1" },
-    }
-    slideUp: {
-      "0%": { transform: "translateY(10px)", opacity: "0" },
-      "100%": { transform: "translateY(0)", opacity: "1" },
-    }
-    shimmer: {
-      "0%, 100%": { opacity: "0.5" },
-      "50%": { opacity: "1" },
-    }
-    glow: {
-      "0%, 100%": { "box-shadow": "0 0 20px rgba(168, 85, 247, 0.15)" },
-      "50%": { "box-shadow": "0 0 30px rgba(168, 85, 247, 0.25)" },
-    }
-  }
-}
-
+/* ---------- Root Variables ---------- */
 :root {
   --background: 0 0% 100%;
   --foreground: 0 0% 15%;
@@ -53,6 +19,33 @@
   --primary-foreground: 0 0% 100%;
 }
 
+/* ---------- Animations ---------- */
+@keyframes fadeUp {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes slideUp {
+  0% { transform: translateY(10px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes shimmer {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(168, 85, 247, 0.15); }
+  50% { box-shadow: 0 0 30px rgba(168, 85, 247, 0.25); }
+}
+
+/* ---------- Base Styles ---------- */
 html,
 body {
   height: 100%;
@@ -70,7 +63,7 @@ body {
   position: relative;
 }
 
-/* Radial gradient background glow */
+/* ---------- Radial glow background ---------- */
 body::before {
   content: '';
   position: fixed;
@@ -83,12 +76,13 @@ body::before {
   z-index: -1;
 }
 
+/* ---------- Selection ---------- */
 ::selection {
   background: rgba(168, 85, 247, 0.2);
   color: inherit;
 }
 
-/* Shadow depth hierarchy */
+/* ---------- Shadows ---------- */
 .shadow-soft {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
@@ -105,7 +99,7 @@ body::before {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), 0 2px 12px rgba(168, 85, 247, 0.15);
 }
 
-/* Glassmorphism base */
+/* ---------- Glassmorphism ---------- */
 .glass {
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(10px);
