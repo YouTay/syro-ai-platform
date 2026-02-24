@@ -36,11 +36,11 @@ jobs:
           docker tag "$IMAGE_SHA" "$IMAGE_LATEST"
           docker push "$IMAGE_LATEST"
 
-      - name: Set Container App secrets + env vars
+      # ✅ Keine Portal-Aktion: Secrets werden hier programmatisch in ACA gesetzt
+      - name: Set Container App secrets + env vars (from GitHub Secrets)
         run: |
           set -euo pipefail
 
-          # 1) Store secrets in Container App (encrypted)
           az containerapp secret set \
             --name "syro-ai-platform" \
             --resource-group "rg-syro-ai" \
@@ -49,7 +49,6 @@ jobs:
               table-conn="${{ secrets.AZURE_TABLE_CONNECTION_STRING }}" \
               jwt-secret="${{ secrets.JWT_SECRET }}"
 
-          # 2) Reference secrets as env vars (and set model if provided)
           az containerapp update \
             --name "syro-ai-platform" \
             --resource-group "rg-syro-ai" \
