@@ -60,12 +60,12 @@ export default function CreateAgentDialog({ onCreated }: { onCreated: () => void
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="rounded-lg bg-gray-900 text-white font-medium hover:bg-gray-800 transition-colors">
+        <Button variant="gradient" className="rounded-lg">
           Create Agent
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="rounded-xl sm:max-w-lg">
+      <DialogContent className="rounded-2xl glass shadow-lg-premium border-gray-200/60 sm:max-w-lg">
         <DialogHeader>
           <DialogTitle className="text-xl text-gray-900">Create New Agent</DialogTitle>
           <DialogDescription className="text-gray-600">
@@ -81,7 +81,7 @@ export default function CreateAgentDialog({ onCreated }: { onCreated: () => void
               placeholder="e.g., Customer Support Bot"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="rounded-lg border-gray-300 bg-gray-50 text-gray-900"
+              className="rounded-lg border-gray-200/50 bg-white/50 text-gray-900 backdrop-blur-sm focus:bg-white/80 transition-all"
             />
           </div>
 
@@ -89,7 +89,7 @@ export default function CreateAgentDialog({ onCreated }: { onCreated: () => void
             <Label htmlFor="prompt" className="text-sm font-medium text-gray-900">System Prompt</Label>
             <Textarea
               id="prompt"
-              className="min-h-[140px] rounded-lg border-gray-300 bg-gray-50 text-gray-900"
+              className="min-h-[140px] rounded-lg border-gray-200/50 bg-white/50 text-gray-900 backdrop-blur-sm focus:bg-white/80 transition-all"
               value={systemPrompt}
               onChange={(e) => setSystemPrompt(e.target.value)}
               placeholder="Define the agent's role, personality, constraints, and output format..."
@@ -103,14 +103,15 @@ export default function CreateAgentDialog({ onCreated }: { onCreated: () => void
         <DialogFooter className="gap-2 sm:gap-0">
           <Button 
             variant="outline" 
-            className="rounded-lg border-gray-300 text-gray-700 hover:bg-gray-100" 
+            className="rounded-lg" 
             onClick={() => setOpen(false)} 
             disabled={pending}
           >
             Cancel
           </Button>
           <Button
-            className="rounded-lg bg-gray-900 text-white font-medium hover:bg-gray-800 transition-colors"
+            variant="gradient"
+            className="rounded-lg"
             onClick={create}
             disabled={pending}
           >

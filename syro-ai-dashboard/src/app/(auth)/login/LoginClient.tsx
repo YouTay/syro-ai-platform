@@ -64,19 +64,19 @@ export default function LoginClient() {
   }
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center p-6">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen bg-white flex items-center justify-center p-6 animate-fadeIn">
+      <div className="w-full max-w-md animate-slideUp">
         <div className="mb-10 text-center">
           <div className="inline-flex items-center gap-2 justify-center mb-6">
-            <div className="h-10 w-10 rounded-lg bg-purple-600" />
-            <div className="text-2xl font-bold text-purple-600">Syro</div>
+            <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-purple-600 to-purple-500 shadow-soft2" />
+            <div className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-purple-500 bg-clip-text text-transparent">Syro</div>
           </div>
           <p className="text-sm text-gray-600">
             Sign in to your Syro workspace
           </p>
         </div>
 
-        <Card className="rounded-2xl shadow-soft2 border border-gray-200">
+        <Card className="rounded-2xl glass shadow-glass border-gray-200/60">
           <CardHeader className="pb-5">
             <CardTitle className="text-2xl font-bold text-gray-900">Welcome Back</CardTitle>
             <CardDescription className="text-gray-600">
@@ -95,7 +95,7 @@ export default function LoginClient() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   autoComplete="email"
-                  className="rounded-xl border-gray-200 bg-gray-50 text-gray-900"
+                  className="rounded-lg border-gray-200/50 bg-white/50 text-gray-900 backdrop-blur-sm focus:bg-white/80 transition-all"
                 />
               </div>
 
@@ -108,13 +108,14 @@ export default function LoginClient() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   autoComplete="current-password"
-                  className="rounded-xl border-gray-200 bg-gray-50 text-gray-900"
+                  className="rounded-lg border-gray-200/50 bg-white/50 text-gray-900 backdrop-blur-sm focus:bg-white/80 transition-all"
                 />
               </div>
 
               <Button
                 type="submit"
-                className="w-full rounded-xl bg-gray-900 text-white font-medium hover:bg-gray-800 transition-colors mt-6"
+                variant="gradient"
+                className="w-full rounded-lg mt-6"
                 disabled={pending}
               >
                 {pending ? "Signing in..." : "Sign In"}

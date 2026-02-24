@@ -63,7 +63,7 @@ export default function DashboardPage() {
   if (loading) return <DashboardSkeleton />;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 animate-fadeUp">
       <div>
         <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
         <p className="text-base text-gray-600 mt-1">
@@ -92,7 +92,7 @@ export default function DashboardPage() {
         />
       </div>
 
-      <div className="rounded-xl border border-gray-200 bg-white shadow-soft p-6">
+      <div className="rounded-2xl glass shadow-glass border-gray-200/60 p-6 animate-slideUp">
         <div className="flex items-start justify-between mb-6">
           <div>
             <h2 className="text-lg font-semibold text-gray-900">

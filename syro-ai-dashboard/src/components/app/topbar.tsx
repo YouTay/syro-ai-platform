@@ -44,10 +44,10 @@ export default function Topbar() {
   }
 
   return (
-    <header className="sticky top-0 z-20 bg-white border-b border-gray-200">
+    <header className="sticky top-0 z-20 glass shadow-soft border-b border-gray-200/50">
       <div className="px-6 lg:px-8 py-4 flex items-center justify-between">
         <div className="md:hidden font-semibold tracking-tight">
-          <span className="text-lg font-bold text-purple-600">Syro</span>
+          <span className="text-lg font-bold bg-gradient-to-r from-purple-600 to-purple-500 bg-clip-text text-transparent">Syro</span>
         </div>
 
         <div className="ml-auto flex items-center gap-4">
@@ -60,7 +60,7 @@ export default function Topbar() {
 
           <Button 
             variant="outline" 
-            className="rounded-lg border-gray-300 text-gray-700 hover:bg-gray-100 transition-colors" 
+            className="rounded-lg" 
             onClick={onLogout}
           >
             <LogOut className="h-4 w-4 mr-2" />

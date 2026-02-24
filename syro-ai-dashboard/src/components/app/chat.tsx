@@ -140,12 +140,12 @@ export default function Chat({ agentId, systemPrompt }: { agentId: number; syste
   }
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[1fr_380px]">
-      <Card className="rounded-xl border border-gray-200 shadow-soft overflow-hidden">
+    <div className="grid gap-6 lg:grid-cols-[1fr_380px] animate-slideUp">
+      <Card className="rounded-2xl glass shadow-glass border-gray-200/60 overflow-hidden">
         <CardContent className="p-0 flex flex-col h-full">
-          <div className="border-b border-gray-200 bg-white px-6 py-4 flex items-center justify-between">
+          <div className="border-b border-gray-200/50 glass px-6 py-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-lg bg-purple-600 flex items-center justify-center">
+              <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-purple-600 to-purple-500 flex items-center justify-center shadow-soft2">
                 <Sparkles className="h-5 w-5 text-white" />
               </div>
               <div>
@@ -158,7 +158,7 @@ export default function Chat({ agentId, systemPrompt }: { agentId: number; syste
 
             <Button 
               variant="outline" 
-              className="rounded-lg border-gray-300 text-gray-700 hover:bg-gray-100 transition-colors" 
+              className="rounded-lg" 
               onClick={loadHistory} 
               disabled={loadingHistory || pending}
             >
@@ -167,22 +167,22 @@ export default function Chat({ agentId, systemPrompt }: { agentId: number; syste
             </Button>
           </div>
 
-          <div className="h-[540px] overflow-y-auto bg-white px-6 py-5 space-y-4 flex-1">
+          <div className="h-[540px] overflow-y-auto bg-white/50 backdrop-blur px-6 py-5 space-y-4 flex-1">
             {loadingHistory && (
-              <div className="text-sm text-gray-500 text-center py-8">Loading conversation…</div>
+              <div className="text-sm text-gray-500 text-center py-8 animate-pulse">Loading conversation…</div>
             )}
 
             {!loadingHistory &&
               messages.map((m) => (
-                <div key={m.id} className={cn("flex", m.role === "user" ? "justify-end" : "justify-start")}>
+                <div key={m.id} className={cn("flex animate-slideUp", m.role === "user" ? "justify-end" : "justify-start")}>
                   <div
                     className={cn(
-                      "max-w-[75%] rounded-xl px-4 py-3 text-sm shadow-soft border",
+                      "max-w-[75%] rounded-xl px-4 py-3 text-sm shadow-soft border transition-all duration-300",
                       m.role === "user"
-                        ? "bg-purple-600 text-white border-none"
+                        ? "bg-gradient-to-r from-purple-600 to-purple-500 text-white border-none shadow-soft2 hover:shadow-glass"
                         : m.role === "system"
-                        ? "bg-gray-100 text-gray-900 border-gray-200"
-                        : "bg-gray-100 text-gray-900 border-gray-200"
+                        ? "glass border-gray-200/50"
+                        : "glass border-gray-200/50"
                     )}
                   >
                     <div className="whitespace-pre-wrap leading-relaxed">{m.content}</div>
@@ -197,7 +197,7 @@ export default function Chat({ agentId, systemPrompt }: { agentId: number; syste
 
             {pending && (
               <div className="flex justify-start">
-                <div className="max-w-[75%] rounded-xl px-4 py-3 text-sm shadow-soft border bg-gray-100 text-gray-900 border-gray-200">
+                <div className="max-w-[75%] rounded-xl px-4 py-3 text-sm shadow-soft border glass animate-pulse">
                   <div className="flex items-center gap-2 text-gray-700">
                     <span className="inline-block h-2 w-2 rounded-full bg-purple-600 animate-pulse" />
                     Agent is thinking…
@@ -209,19 +209,20 @@ export default function Chat({ agentId, systemPrompt }: { agentId: number; syste
             <div ref={endRef} />
           </div>
 
-          <div className="border-t border-gray-200 bg-white p-5">
+          <div className="border-t border-gray-200/50 glass p-5">
             <div className="flex gap-3">
               <Textarea
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={onKeyDown}
                 placeholder="Ask the agent anything… (Enter to send, Shift+Enter for new line)"
-                className="min-h-[44px] max-h-[120px] resize-none rounded-lg border-gray-300 bg-gray-50 text-sm text-gray-900"
+                className="min-h-[44px] max-h-[120px] resize-none rounded-lg border-gray-200/50 bg-white/50 text-sm text-gray-900 backdrop-blur-sm focus:bg-white/80 transition-all"
               />
               <Button
                 onClick={() => void send()}
                 disabled={!canSend}
-                className="rounded-lg bg-purple-600 text-white font-medium hover:bg-purple-700 transition-colors self-end flex-shrink-0"
+                variant="gradient"
+                className="rounded-lg self-end flex-shrink-0"
               >
                 <Send className="h-4 w-4 mr-2" />
                 Send
@@ -231,13 +232,13 @@ export default function Chat({ agentId, systemPrompt }: { agentId: number; syste
         </CardContent>
       </Card>
 
-      <Card className="rounded-xl border border-gray-200 shadow-soft h-fit">
+      <Card className="rounded-2xl glass shadow-glass border-gray-200/60 h-fit">
         <CardContent className="p-6 space-y-4">
           <div>
             <div className="text-sm font-semibold text-gray-900 mb-1">System Prompt</div>
             <div className="text-xs text-gray-600">Defines the agent's personality and behavior</div>
           </div>
-          <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 text-xs text-gray-700 whitespace-pre-wrap max-h-[200px] overflow-y-auto leading-relaxed font-mono">
+          <div className="rounded-lg border border-gray-200/50 glass p-4 text-xs text-gray-700 whitespace-pre-wrap max-h-[200px] overflow-y-auto leading-relaxed font-mono">
             {systemPrompt}
           </div>
         </CardContent>

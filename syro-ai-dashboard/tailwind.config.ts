@@ -23,6 +23,9 @@ export default {
         soft: "0 10px 30px rgba(0,0,0,0.06)",
         soft2: "0 18px 60px rgba(0,0,0,0.08)",
       },
+      scale: {
+        102: "1.02",
+      },
     },
   },
   plugins: [],
