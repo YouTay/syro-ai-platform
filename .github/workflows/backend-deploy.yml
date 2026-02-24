@@ -1,12 +1,11 @@
-name: Build and Push Backend
+name: Build Push Deploy Backend
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
-  build-and-push:
+  build-push-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -25,7 +24,22 @@ jobs:
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
 
-      - name: Build and Push Docker Image
+      - name: Build and Push (immutable tag + latest)
         run: |
-          docker build -t ${{ secrets.ACR_LOGIN_SERVER }}/syro-backend:latest .
-          docker push ${{ secrets.ACR_LOGIN_SERVER }}/syro-backend:latest
+          IMAGE_SHA="${{ secrets.ACR_LOGIN_SERVER }}/syro-backend:sha-${{ github.sha }}"
+          IMAGE_LATEST="${{ secrets.ACR_LOGIN_SERVER }}/syro-backend:latest"
+
+          docker build -t "$IMAGE_SHA" .
+          docker push "$IMAGE_SHA"
+
+          docker tag "$IMAGE_SHA" "$IMAGE_LATEST"
+          docker push "$IMAGE_LATEST"
+
+      - name: Deploy to Azure Container App (creates new revision)
+        run: |
+          IMAGE_SHA="${{ secrets.ACR_LOGIN_SERVER }}/syro-backend:sha-${{ github.sha }}"
+
+          az containerapp update \
+            --name "syro-ai-platform" \
+            --resource-group "rg-syro-ai" \
+            --image "$IMAGE_SHA"
