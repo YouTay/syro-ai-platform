@@ -1,0 +1,129 @@
+import os
+from datetime import datetime, timedelta
+from dotenv import load_dotenv
+
+from fastapi import FastAPI, Depends, HTTPException
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+
+from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
+from sqlalchemy.orm import declarative_base, sessionmaker, relationship, Session
+
+from jose import jwt
+from passlib.context import CryptContext
+
+from openai import OpenAI
+
+# ---------- Setup ----------
+load_dotenv()
+
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+JWT_SECRET = os.getenv("JWT_SECRET")
+
+client = OpenAI(api_key=OPENAI_API_KEY)
+
+app = FastAPI(title="Syro AI Platform")
+
+# ---------- DB ----------
+engine = create_engine("sqlite:///./app.db")
+SessionLocal = sessionmaker(bind=engine)
+Base = declarative_base()
+
+# ---------- Models ----------
+class User(Base):
+    __tablename__ = "users"
+    id = Column(Integer, primary_key=True)
+    email = Column(String, unique=True)
+    password = Column(String)
+
+    agents = relationship("Agent", back_populates="user")
+
+class Agent(Base):
+    __tablename__ = "agents"
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    system_prompt = Column(String)
+    user_id = Column(Integer, ForeignKey("users.id"))
+
+    user = relationship("User", back_populates="agents")
+
+Base.metadata.create_all(engine)
+
+# ---------- Auth ----------
+pwd_context = CryptContext(schemes=["bcrypt"])
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login")
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+def create_token(email):
+    payload = {
+        "sub": email,
+        "exp": datetime.utcnow() + timedelta(days=1)
+    }
+    return jwt.encode(payload, JWT_SECRET, algorithm="HS256")
+
+def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+    payload = jwt.decode(token, JWT_SECRET, algorithms=["HS256"])
+    email = payload.get("sub")
+    user = db.query(User).filter(User.email == email).first()
+    return user
+
+# ---------- Routes ----------
+
+@app.post("/register")
+def register(email: str, password: str, db: Session = Depends(get_db)):
+    hashed = pwd_context.hash(password)
+    user = User(email=email, password=hashed)
+    db.add(user)
+    db.commit()
+    return {"msg": "User created"}
+
+@app.post("/login")
+def login(form: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.email == form.username).first()
+    if not user or not pwd_context.verify(form.password, user.password):
+        raise HTTPException(401, "Invalid credentials")
+
+    token = create_token(user.email)
+    return {"access_token": token, "token_type": "bearer"}
+
+@app.post("/agents")
+def create_agent(name: str, system_prompt: str,
+                 user=Depends(get_current_user),
+                 db: Session = Depends(get_db)):
+    agent = Agent(name=name, system_prompt=system_prompt, user_id=user.id)
+    db.add(agent)
+    db.commit()
+    return {"msg": "Agent created"}
+
+@app.get("/agents")
+def list_agents(user=Depends(get_current_user), db: Session = Depends(get_db)):
+    agents = db.query(Agent).filter(Agent.user_id == user.id).all()
+    return agents
+
+@app.post("/agents/{agent_id}/chat")
+def chat(agent_id: int, message: str,
+         user=Depends(get_current_user),
+         db: Session = Depends(get_db)):
+
+    agent = db.query(Agent).filter(
+        Agent.id == agent_id,
+        Agent.user_id == user.id
+    ).first()
+
+    if not agent:
+        raise HTTPException(404, "Agent not found")
+
+    completion = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "system", "content": agent.system_prompt},
+            {"role": "user", "content": message}
+        ]
+    )
+
+    return {"response": completion.choices[0].message.content}
