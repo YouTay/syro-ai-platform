@@ -49,10 +49,14 @@ app = FastAPI(title="Syro AI Platform (Phase 1)")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
+        # Local development
         "http://localhost",
         "http://127.0.0.1",
         "http://localhost:3000",
         "http://127.0.0.1:3000",
+
+        # Azure Static Web App (Production Frontend)
+        "https://wonderful-field-0ce214c03.1.azurestaticapps.net",
     ],
     allow_credentials=True,
     allow_methods=["*"],
