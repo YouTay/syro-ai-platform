@@ -26,6 +26,7 @@ jobs:
 
       - name: Build and Push (immutable tag + latest)
         run: |
+          set -euo pipefail
           IMAGE_SHA="${{ secrets.ACR_LOGIN_SERVER }}/syro-backend:sha-${{ github.sha }}"
           IMAGE_LATEST="${{ secrets.ACR_LOGIN_SERVER }}/syro-backend:latest"
 
@@ -35,8 +36,32 @@ jobs:
           docker tag "$IMAGE_SHA" "$IMAGE_LATEST"
           docker push "$IMAGE_LATEST"
 
+      - name: Set Container App secrets + env vars
+        run: |
+          set -euo pipefail
+
+          # 1) Store secrets in Container App (encrypted)
+          az containerapp secret set \
+            --name "syro-ai-platform" \
+            --resource-group "rg-syro-ai" \
+            --secrets \
+              openai-api-key="${{ secrets.OPENAI_API_KEY }}" \
+              table-conn="${{ secrets.AZURE_TABLE_CONNECTION_STRING }}" \
+              jwt-secret="${{ secrets.JWT_SECRET }}"
+
+          # 2) Reference secrets as env vars (and set model if provided)
+          az containerapp update \
+            --name "syro-ai-platform" \
+            --resource-group "rg-syro-ai" \
+            --set-env-vars \
+              OPENAI_API_KEY=secretref:openai-api-key \
+              AZURE_TABLE_CONNECTION_STRING=secretref:table-conn \
+              JWT_SECRET=secretref:jwt-secret \
+              OPENAI_MODEL="${{ secrets.OPENAI_MODEL }}"
+
       - name: Deploy to Azure Container App (creates new revision)
         run: |
+          set -euo pipefail
           IMAGE_SHA="${{ secrets.ACR_LOGIN_SERVER }}/syro-backend:sha-${{ github.sha }}"
 
           az containerapp update \
