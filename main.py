@@ -24,27 +24,28 @@ from storage import get_table_client
 # --------------------
 # Config
 # --------------------
+# In Container Apps kommen Vars aus der Umgebung; load_dotenv schadet lokal nicht.
 load_dotenv()
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-JWT_SECRET = os.getenv("JWT_SECRET", "change-me-please")  # setze in .env!
+JWT_SECRET = os.getenv("JWT_SECRET", "change-me-please")
 JWT_ALG = "HS256"
 JWT_EXP_HOURS = int(os.getenv("JWT_EXP_HOURS", "24"))
 MODEL_NAME = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
 
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./app.db")
 
-if not OPENAI_API_KEY:
-    raise RuntimeError("Missing OPENAI_API_KEY in .env")
-
-client = OpenAI(api_key=OPENAI_API_KEY)
+# OpenAI client: NICHT beim Import crashen lassen (sonst startet Container nie).
+client: Optional[OpenAI] = None
+if OPENAI_API_KEY:
+    # ❗Wichtig: KEIN proxies= ... (sonst TypeError bei openai>=1.x)
+    client = OpenAI(api_key=OPENAI_API_KEY)
 
 # --------------------
 # App
 # --------------------
 app = FastAPI(title="Syro AI Platform (Phase 1)")
 
-# Optional: CORS (für lokales Frontend)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -79,14 +80,10 @@ def iso_utcnow() -> str:
 
 
 def _parse_iso(ts: Optional[str]) -> datetime:
-    """
-    Robust ISO parsing for sorting.
-    If missing/invalid -> epoch, so it sorts first (safe fallback).
-    """
+    """Robust ISO parsing for sorting. If missing/invalid -> epoch."""
     if not ts:
         return datetime.fromtimestamp(0, tz=timezone.utc)
     try:
-        # Python parses 'YYYY-MM-DDTHH:MM:SS(.ms)+00:00'
         return datetime.fromisoformat(ts)
     except Exception:
         return datetime.fromtimestamp(0, tz=timezone.utc)
@@ -131,12 +128,6 @@ messages_table = None
 
 
 def _conversation_id_for_user_agent(agent_id: int) -> str:
-    """
-    Portfolio-simple approach:
-    - One conversation per user per agent.
-    - Conversation RowKey = conversation_id
-    - Messages PartitionKey = conversation_id
-    """
     return f"agent:{agent_id}"
 
 
@@ -145,10 +136,8 @@ def _ensure_conversation_exists(*, user_id: int, agent: Agent) -> str:
     Conversations:
       PartitionKey = user_id
       RowKey = conversation_id
-      agent_id
-      created_at (ISO)
-
-    If not exists -> create conversation + one 'system' message (prompt).
+    Messages:
+      PartitionKey = conversation_id
     """
     assert conversations_table is not None
     assert messages_table is not None
@@ -168,7 +157,6 @@ def _ensure_conversation_exists(*, user_id: int, agent: Agent) -> str:
             }
         )
 
-        # Optional: store system prompt once
         messages_table.create_entity(
             {
                 "PartitionKey": conversation_id,
@@ -182,14 +170,6 @@ def _ensure_conversation_exists(*, user_id: int, agent: Agent) -> str:
 
 
 def _save_message(*, conversation_id: str, role: str, content: str) -> None:
-    """
-    Messages:
-      PartitionKey = conversation_id
-      RowKey = message_id (UUID)
-      role (user/assistant/system)
-      content
-      timestamp (ISO)
-    """
     assert messages_table is not None
     messages_table.create_entity(
         {
@@ -209,9 +189,17 @@ def _save_message(*, conversation_id: str, role: str, content: str) -> None:
 def on_startup() -> None:
     Base.metadata.create_all(bind=engine)
 
+    # Table clients initialisieren (wenn Conn String fehlt, soll App trotzdem starten)
     global conversations_table, messages_table
-    conversations_table = get_table_client("conversations")
-    messages_table = get_table_client("messages")
+    try:
+        conversations_table = get_table_client("conversations")
+        messages_table = get_table_client("messages")
+    except Exception as e:
+        # bleibt None; health endpoint zeigt dann degraded
+        conversations_table = None
+        messages_table = None
+        # Optional: in Logs sichtbar
+        print(f"[startup] Azure Table init failed: {type(e).__name__}: {e}")
 
 
 # --------------------
@@ -244,7 +232,6 @@ def get_current_user(
     db: Session = Depends(get_db),
 ) -> User:
     token = creds.credentials
-
     try:
         payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALG])
         email = payload.get("sub")
@@ -319,7 +306,12 @@ class ConversationMessagesOut(BaseModel):
 # --------------------
 @app.get("/health")
 def health():
-    return {"status": "ok"}
+    return {
+        "status": "ok",
+        "openai_configured": bool(OPENAI_API_KEY),
+        "storage_initialized": conversations_table is not None and messages_table is not None,
+        "model": MODEL_NAME,
+    }
 
 
 @app.post("/auth/register", status_code=201)
@@ -375,13 +367,14 @@ def chat(agent_id: int, payload: ChatIn, user: User = Depends(get_current_user),
         raise HTTPException(status_code=404, detail="Agent not found")
 
     if conversations_table is None or messages_table is None:
-        raise HTTPException(status_code=500, detail="Storage not initialized")
+        raise HTTPException(status_code=500, detail="Storage not initialized (check AZURE_TABLE_CONNECTION_STRING)")
+
+    if client is None:
+        raise HTTPException(status_code=500, detail="OpenAI not configured (check OPENAI_API_KEY)")
 
     conversation_id = _ensure_conversation_exists(user_id=user.id, agent=agent)
-
     _save_message(conversation_id=conversation_id, role="user", content=payload.message)
 
-    # OpenAI integration unchanged
     try:
         completion = client.chat.completions.create(
             model=MODEL_NAME,
@@ -392,51 +385,29 @@ def chat(agent_id: int, payload: ChatIn, user: User = Depends(get_current_user),
             temperature=0.7,
         )
         text = completion.choices[0].message.content or ""
-
         _save_message(conversation_id=conversation_id, role="assistant", content=text)
-
         return ChatOut(response=text)
-
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"OpenAI error: {type(e).__name__}: {str(e)}")
 
 
-# --------------------
-# NEW: Load chat history from Azure Table Storage
-# --------------------
 @app.get("/conversations/{conversation_id}/messages", response_model=ConversationMessagesOut)
 def get_conversation_messages(
     conversation_id: str,
     user: User = Depends(get_current_user),
 ):
-    """
-    Requirements:
-    1) Ownership check:
-       Conversations PartitionKey=user_id, RowKey=conversation_id
-    2) Load messages:
-       Messages PartitionKey=conversation_id
-    3) Return sorted by timestamp asc
-    """
     if conversations_table is None or messages_table is None:
-        raise HTTPException(status_code=500, detail="Storage not initialized")
+        raise HTTPException(status_code=500, detail="Storage not initialized (check AZURE_TABLE_CONNECTION_STRING)")
 
-    # 1) Ownership check (only if conversation exists for this user)
+    # Ownership check
     try:
         conversations_table.get_entity(partition_key=str(user.id), row_key=conversation_id)
     except Exception:
-        # Don't leak whether the conversation exists for another user
         raise HTTPException(status_code=404, detail="Conversation not found")
 
-    # 2) Load all messages for this conversation
-    # Use PartitionKey filter for fast lookup
     pk = conversation_id
-    entities = list(
-        messages_table.query_entities(
-            query_filter=f"PartitionKey eq '{pk}'"
-        )
-    )
+    entities = list(messages_table.query_entities(query_filter=f"PartitionKey eq '{pk}'"))
 
-    # 3) Normalize + sort
     msgs = []
     for e in entities:
         msgs.append(
@@ -449,7 +420,6 @@ def get_conversation_messages(
         )
 
     msgs.sort(key=lambda m: _parse_iso(m.get("timestamp")))
-
     return ConversationMessagesOut(
         conversation_id=conversation_id,
         messages=[MessageOut(**m) for m in msgs],
