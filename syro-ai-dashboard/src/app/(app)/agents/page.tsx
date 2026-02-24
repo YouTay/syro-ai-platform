@@ -34,8 +34,8 @@ export default function AgentsPage() {
     <div className="space-y-8">
       <div className="flex items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-slate-900">Agents</h1>
-          <p className="text-base text-slate-600 mt-2">
+          <h1 className="text-3xl font-bold text-gray-900">Agents</h1>
+          <p className="text-base text-gray-600 mt-2">
             Create and manage your AI agents with custom system prompts and chat capabilities
           </p>
         </div>
@@ -52,12 +52,12 @@ export default function AgentsPage() {
           ))}
         </div>
       ) : (
-        <div className="rounded-2xl border border-slate-200 bg-white shadow-soft2 p-12 text-center">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-[#7C3AED]/10 to-[#2563EB]/5 mb-4">
+        <div className="rounded-xl border border-gray-200 bg-white shadow-soft p-12 text-center">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-lg bg-purple-100 mb-4">
             <div className="text-2xl">🤖</div>
           </div>
-          <div className="text-lg font-semibold text-slate-900">No agents yet</div>
-          <div className="text-sm text-slate-600 mt-2">
+          <div className="text-lg font-semibold text-gray-900">No agents yet</div>
+          <div className="text-sm text-gray-600 mt-2">
             Click "Create Agent" above to add your first AI assistant.
           </div>
         </div>

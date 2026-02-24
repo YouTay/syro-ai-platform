@@ -11,7 +11,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           <Sidebar />
           <div className="flex-1 min-w-0">
             <Topbar />
-            <main className="p-6 lg:p-8 bg-gradient-to-b from-white via-white to-[#fafbfc]">
+            <main className="p-6 lg:p-8 bg-white">
               {children}
             </main>
           </div>

@@ -59,16 +59,16 @@ export default function AgentDetailPage() {
     <div className="space-y-8">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <div className="text-xs font-medium text-slate-600 uppercase tracking-wider">Agent</div>
-          <h1 className="text-3xl font-bold tracking-tight text-slate-900 mt-1">{agent.name}</h1>
-          <div className="mt-3 text-sm text-slate-600">
-            Created <span className="font-medium text-slate-900">{created}</span>
+          <div className="text-xs font-medium text-gray-600 uppercase tracking-wider">Agent</div>
+          <h1 className="text-3xl font-bold text-gray-900 mt-1">{agent.name}</h1>
+          <div className="mt-3 text-sm text-gray-600">
+            Created <span className="font-medium text-gray-900">{created}</span>
           </div>
         </div>
 
         <Button
           variant="outline"
-          className="rounded-xl border-slate-200 text-slate-600 hover:bg-slate-50"
+          className="rounded-lg border-gray-300 text-gray-700 hover:bg-gray-100"
           onClick={() => router.push("/agents")}
         >
           ← Back to Agents

@@ -60,42 +60,42 @@ export default function CreateAgentDialog({ onCreated }: { onCreated: () => void
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="rounded-xl bg-gradient-to-r from-[#7C3AED] to-[#2563EB] text-white font-medium shadow-soft2 hover:shadow-lg hover:opacity-90 transition-all">
+        <Button className="rounded-lg bg-gray-900 text-white font-medium hover:bg-gray-800 transition-colors">
           Create Agent
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="rounded-2xl sm:max-w-lg">
+      <DialogContent className="rounded-xl sm:max-w-lg">
         <DialogHeader>
-          <DialogTitle className="text-xl">Create New Agent</DialogTitle>
-          <DialogDescription className="text-slate-600">
+          <DialogTitle className="text-xl text-gray-900">Create New Agent</DialogTitle>
+          <DialogDescription className="text-gray-600">
             Configure a new AI agent with custom name and system prompt to define its personality and behavior.
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-5">
           <div className="space-y-2">
-            <Label htmlFor="name" className="text-sm font-medium">Agent Name</Label>
+            <Label htmlFor="name" className="text-sm font-medium text-gray-900">Agent Name</Label>
             <Input
               id="name"
               placeholder="e.g., Customer Support Bot"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="rounded-xl border-slate-200 bg-slate-50"
+              className="rounded-lg border-gray-300 bg-gray-50 text-gray-900"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="prompt" className="text-sm font-medium">System Prompt</Label>
+            <Label htmlFor="prompt" className="text-sm font-medium text-gray-900">System Prompt</Label>
             <Textarea
               id="prompt"
-              className="min-h-[140px] rounded-xl border-slate-200 bg-slate-50"
+              className="min-h-[140px] rounded-lg border-gray-300 bg-gray-50 text-gray-900"
               value={systemPrompt}
               onChange={(e) => setSystemPrompt(e.target.value)}
               placeholder="Define the agent's role, personality, constraints, and output format..."
             />
-            <div className="text-xs text-slate-500">
-              💡 Keep it focused. Include role, personality, constraints, and output format.
+            <div className="text-xs text-gray-600">
+              Keep it focused. Include role, personality, constraints, and output format.
             </div>
           </div>
         </div>
@@ -103,14 +103,14 @@ export default function CreateAgentDialog({ onCreated }: { onCreated: () => void
         <DialogFooter className="gap-2 sm:gap-0">
           <Button 
             variant="outline" 
-            className="rounded-xl border-slate-200 text-slate-600 hover:bg-slate-50" 
+            className="rounded-lg border-gray-300 text-gray-700 hover:bg-gray-100" 
             onClick={() => setOpen(false)} 
             disabled={pending}
           >
             Cancel
           </Button>
           <Button
-            className="rounded-xl bg-gradient-to-r from-[#7C3AED] to-[#2563EB] text-white font-medium shadow-soft2 hover:shadow-lg hover:opacity-90 transition-all"
+            className="rounded-lg bg-gray-900 text-white font-medium hover:bg-gray-800 transition-colors"
             onClick={create}
             disabled={pending}
           >

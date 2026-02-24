@@ -64,9 +64,9 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-8">
-      <div className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight text-slate-900">Dashboard</h1>
-        <p className="text-base text-slate-600">
+      <div>
+        <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
+        <p className="text-base text-gray-600 mt-1">
           Overview of your Syro AI workspace
         </p>
       </div>
@@ -92,23 +92,21 @@ export default function DashboardPage() {
         />
       </div>
 
-      <div className="rounded-2xl border border-slate-200 bg-white shadow-soft2 p-6">
+      <div className="rounded-xl border border-gray-200 bg-white shadow-soft p-6">
         <div className="flex items-start justify-between mb-6">
           <div>
-            <h2 className="text-lg font-semibold text-slate-900">
+            <h2 className="text-lg font-semibold text-gray-900">
               Weekly Usage
             </h2>
-            <p className="text-sm text-slate-500 mt-1">
+            <p className="text-sm text-gray-600 mt-1">
               Agent interactions over the past week
             </p>
           </div>
 
-          <div className="text-xs text-slate-500 text-right">
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2">
-                <div className="h-3 w-3 rounded-full bg-[#7C3AED]" />
-                <span className="font-medium">Usage</span>
-              </div>
+          <div className="text-xs text-gray-600">
+            <div className="flex items-center gap-2">
+              <div className="h-3 w-3 rounded-full bg-purple-600" />
+              <span className="font-medium">Usage</span>
             </div>
           </div>
         </div>
@@ -118,29 +116,29 @@ export default function DashboardPage() {
             <AreaChart data={dummy} margin={{ top: 10, right: 18, left: 0, bottom: 0 }}>
               <defs>
                 <linearGradient id="syroGrad" x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0%" stopColor="#7C3AED" stopOpacity={0.2} />
-                  <stop offset="100%" stopColor="#2563EB" stopOpacity={0.1} />
+                  <stop offset="0%" stopColor="#a855f7" stopOpacity={0.15} />
+                  <stop offset="100%" stopColor="#7c3aed" stopOpacity={0.05} />
                 </linearGradient>
               </defs>
 
-              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-              <XAxis dataKey="name" tickLine={false} axisLine={false} tick={{ fill: '#94a3b8', fontSize: 12 }} />
-              <YAxis tickLine={false} axisLine={false} width={28} tick={{ fill: '#94a3b8', fontSize: 12 }} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+              <XAxis dataKey="name" tickLine={false} axisLine={false} tick={{ fill: '#9ca3af', fontSize: 12 }} />
+              <YAxis tickLine={false} axisLine={false} width={28} tick={{ fill: '#9ca3af', fontSize: 12 }} />
               <Tooltip 
                 contentStyle={{ 
-                  borderRadius: '0.75rem', 
-                  border: '1px solid #e2e8f0',
+                  borderRadius: '0.5rem', 
+                  border: '1px solid #e5e7eb',
                   backgroundColor: '#ffffff',
-                  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06)'
+                  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)'
                 }}
               />
 
               <Area
                 type="monotone"
                 dataKey="value"
-                stroke="#7C3AED"
+                stroke="#a855f7"
                 fill="url(#syroGrad)"
-                strokeWidth={2.5}
+                strokeWidth={2}
               />
             </AreaChart>
           </ResponsiveContainer>
