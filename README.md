@@ -43,18 +43,7 @@ Unternehmen stehen häufig vor folgenden Herausforderungen:
 **Ergebnis:**
 Steigerung der Produktivität bei voller Datenkontrolle.
 
-flowchart TB
-  U[User] --> FE[Frontend Static Web App]
-  FE --> BE[Backend Container App]
-  BE --> DT[Azure Data Tables]
-  BE --> OAI[OpenAI API]
-  BE --> OBS[App Insights and Log Analytics]
-  OBS --> AL[Azure Monitor Alerts]
-
-  GH[GitHub Repo] --> GA[GitHub Actions]
-  GA --> ACR[Azure Container Registry]
-  ACR --> BE
-  GA --> FE
+![Architektur](./screenshots/Architektur-Platform.png)
 
 # 2. Produkt-Demonstration (User Flow)
 
