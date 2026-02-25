@@ -33,4 +33,3 @@ flowchart TB
     GA --> ACR[(Azure Container Registry)]
     ACR --> BE
     GA --> FE
-  end
