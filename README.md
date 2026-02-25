@@ -38,7 +38,6 @@ flowchart TB
 
 # 🔷 BLOCK 2 – Vollständige README mit Screenshots (GitHub ready)
 
-```markdown
 # Executive Summary
 
 Die **Syro AI Platform** ist eine produktionsreife AI-Agent-Plattform auf Microsoft Azure.  
