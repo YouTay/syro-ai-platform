@@ -9,7 +9,7 @@
 ## Executive Summary
 
 Die **Syro AI Platform** ist eine produktionsreife AI-Agent-Plattform auf Microsoft Azure.  
-Sie ermöglicht Unternehmen, spezialisierte interne KI-Assistenten zu erstellen und vollständig innerhalb der eigenen Cloud-Infrastruktur zu betreiben.
+Sie ermöglicht Unternehmen, spezialisierte interne KI-Assistenten vollständig innerhalb der eigenen Cloud-Infrastruktur zu betreiben.
 
 Dieses Projekt demonstriert:
 
@@ -19,312 +19,163 @@ Dieses Projekt demonstriert:
 - Security- und Monitoring-Best-Practices  
 - Professionelle CI/CD-Implementierung  
 
-Ziel ist es, AI nicht als Experiment, sondern als **kontrollierbares, skalierbares und geschäftsrelevantes Produktivitätswerkzeug** einzusetzen.
-
----
-
-# Business Value
-
-Viele Unternehmen stehen vor ähnlichen Herausforderungen:
-
-- Entwickler verlieren Zeit bei Debugging und Code-Recherche  
-- DevOps-Fragen blockieren Projekte  
-- Marketing benötigt schnelle Content-Unterstützung  
-- Sensible Unternehmensdaten dürfen nicht extern gespeichert werden  
-- AI-Lösungen sind nicht in bestehende Cloud-Infrastrukturen integriert  
-
-### Lösung durch Syro
-
-- Interne AI Agents mit klar definierter Rolle  
-- Vollständiger Betrieb in Microsoft Azure  
-- Multi-User-System mit Authentifizierung  
-- Monitoring, Logging und Alerting  
-- Skalierbare container-basierte Architektur  
-
-**Ergebnis:** Höhere Produktivität bei voller Datenkontrolle.
-
 ---
 
 # Konkretes Praxisbeispiel
 
-Ein *Python Expert Agent* wurde mit folgendem System Prompt konfiguriert:
+Ein Python Expert Agent wurde mit folgendem System Prompt konfiguriert:
 
 > "Du bist ein Python Experte und schreibst sauberen, strukturierten Code."
 
-### Anfrage
+### Generierter Code
 
-> "Erstelle mir eine Taschenrechner App mit GUI in Python."
+![Python Code Expert](./screenshots/Python-code-expert.PNG)
 
-### Ergebnis
+### Erklärung durch den Agenten
 
-Der Agent:
+![Python Erklärung](./screenshots/python-experte-erklärung-anleitung.PNG)
 
-- Generierte vollständigen `tkinter`-Code  
-- Erklärte die Struktur des Programms  
-- Lieferte lauffähigen Produktionscode  
+### Ausgeführte GUI-App
 
----
-
-## Python Agent generiert Code
-
-![Python Agent generiert Code](./screenshots/python-agent-code.png)
-
----
-
-## Ausgeführte GUI-App
-
-![Ausgeführte GUI-App](./screenshots/calculator-gui.png)
+![Taschenrechner App](./screenshots/Taschenrechner-App-funktioniert.PNG)
 
 Dieses Beispiel zeigt:
 
 - AI generiert funktionierenden Produktionscode  
-- Interne Developer Support Agents sind realisierbar  
+- Developer Support Agents sind real umsetzbar  
 - AI kann als internes Produktivitätstool eingesetzt werden  
-
----
-
-# Business Use Cases
-
-## 1. Developer Support Agent
-
-- Code generieren  
-- Bugs analysieren  
-- Best Practices erklären  
-- Architekturfragen beantworten  
-
-## 2. Azure DevOps Agent
-
-- CI/CD-Workflows erklären  
-- Azure CLI Commands generieren  
-- Container Deployments unterstützen  
-- Monitoring und Alerts konfigurieren  
-
-## 3. Marketing Agent
-
-- Kampagnenideen entwickeln  
-- B2B Content generieren  
-- Texte optimieren  
-
-## 4. Sales Agent
-
-- Angebotsvorlagen erstellen  
-- Antworttexte formulieren  
-- Kundenkommunikation unterstützen  
-
----
-
-# Architektur Überblick
-
-Die gesamte Plattform läuft in **Microsoft Azure (Region: West Europe)**.
-
-## Verwendete Azure Services
-
-- Azure Container Apps  
-- Azure Container Registry  
-- Azure Static Web Apps  
-- Azure Application Insights  
-- Azure Log Analytics  
-- Azure Monitor Alerts  
-- Azure Data Tables  
-
----
-
-## Ressourcenübersicht
-
-![Azure Ressourcenübersicht](./screenshots/azure-resource-group.png)
-
----
-
-## Container App Übersicht
-
-![Container App Übersicht](./screenshots/container-app-overview.png)
-
----
-
-## Laufende Container Revision
-
-![Container Revision](./screenshots/container-revision.png)
-
----
-
-## Azure Container Registry
-
-![Azure Container Registry](./screenshots/container-registry.png)
-
----
-
-# Authentifizierung und Security
-
-Implementierte Sicherheitsmechanismen:
-
-- Benutzerregistrierung  
-- Login-System  
-- Passwort-Hashing mit `bcrypt`  
-- JWT Token Authentifizierung  
-- Secrets via GitHub Secrets  
-- Secrets in Azure Container Apps  
-- HTTPS-only Deployment  
-
----
-
-## Login
-
-![Login](./screenshots/login.png)
-
----
-
-## Registrierung
-
-![Registrierung](./screenshots/register.png)
 
 ---
 
 # Agent System
 
-Benutzer können:
+## Agent Übersicht
 
-- Eigene Agents erstellen  
-- System Prompts definieren  
-- Rollen und Verhalten konfigurieren  
+![Agents Dashboard](./screenshots/Agents-dashboard.png)
 
----
+## Azure DevOps Agent Detail
+
+![Azure DevOps Agent](./screenshots/azure-devops-agent.png)
 
 ## Agent erstellen
 
-![Agent erstellen](./screenshots/create-agent.png)
-
----
-
-## Agent Übersicht
-
-![Agent Übersicht](./screenshots/agent-overview.png)
-
----
-
-## Agent Detail (Azure DevOps Agent)
-
-![Agent Detail](./screenshots/agent-detail.png)
+![Create Agent](./screenshots/create-agent.png)
 
 ---
 
 # Dashboard
 
-Das Dashboard bietet:
-
-- Gesamtanzahl der Agents  
-- Weekly Usage  
-- System Status  
-- Plattform-Aktivität  
-
-![Dashboard](./screenshots/dashboard.png)
+![Syro Dashboard](./screenshots/syro-ai-platform-dashboard.png)
 
 ---
 
-# Monitoring & Production Readiness
+# Azure Infrastruktur
 
-Integriert:
+## Ressourcenübersicht
 
-- Application Insights  
-- Request Monitoring  
-- Response Time Analyse  
-- Error Tracking  
-- Telemetrie  
-- Azure Alert Regeln  
+![Ressourcen Übersicht](./screenshots/ressourcen-übersicht.png)
+
+## Container App Übersicht
+
+![Container App Overview](./screenshots/container-app-overview.png)
+
+## Laufende Container Revision
+
+![Container Revision](./screenshots/container-revision-running.png)
+
+## Azure Container Registry (Image Tags)
+
+![ACR Image Tags](./screenshots/acr-image-tags.PNG)
+
+---
+
+# Monitoring & Observability
 
 ## Application Insights
 
-![Application Insights](./screenshots/application-insights.png)
+![Application Insights](./screenshots/application-insights-overview.png)
 
----
+## Azure Warnungsregeln
 
-## Aktivierte Metrik-Warnungen
-
-Konfigurierte Warnungen:
-
-- CPU > 80%  
-- HTTP 5xx Fehler  
-
-![Azure Alerts](./screenshots/azure-alerts.png)
+![Warnungsregeln](./screenshots/warnungsregeln.png)
 
 ---
 
 # CI/CD Pipeline
 
-Zwei getrennte Workflows:
+![GitHub Actions Runs](./screenshots/github-actions-erfolgreiche-runs.png)
 
-### Frontend Deployment
-Azure Static Web Apps
+---
 
-### Backend Pipeline
-Build → Docker Build → Push to ACR → Deploy Container App
+# Authentifizierung & Security
 
-![GitHub Actions](./screenshots/github-actions.png)
+## Login
+
+![Login](./screenshots/login.png)
+
+## Registrierung
+
+![Register](./screenshots/register.png)
 
 ---
 
 # Tech Stack
 
 ## Backend
-
-- Python  
-- FastAPI  
-- SQLAlchemy  
-- Pydantic  
-- python-jose (JWT)  
-- bcrypt  
-- Azure Data Tables  
-- OpenAI API  
+- Python
+- FastAPI
+- SQLAlchemy
+- Pydantic
+- python-jose (JWT)
+- bcrypt
+- Azure Data Tables
+- OpenAI API
 
 ## Frontend
-
-- Next.js  
-- TypeScript  
-- TailwindCSS  
+- Next.js
+- TypeScript
+- TailwindCSS
 
 ## Cloud
-
-- Azure Container Apps  
-- Azure Container Registry  
-- Azure Static Web Apps  
-- Azure Monitor  
-- Azure Log Analytics  
-- Application Insights  
+- Azure Container Apps
+- Azure Container Registry
+- Azure Static Web Apps
+- Azure Monitor
+- Azure Log Analytics
+- Application Insights
 
 ## DevOps
-
-- Docker  
-- GitHub Actions  
-- CI/CD Pipelines  
-- Containerization  
+- Docker
+- GitHub Actions
+- CI/CD Pipelines
 
 ---
 
-# Technische Kompetenzen, die dieses Projekt demonstriert
+# Demonstrierte Kompetenzen
 
 - End-to-End SaaS Entwicklung  
-- Multi-User-Architektur  
+- Multi-User Architektur  
 - AI-Integration in produktiver Umgebung  
 - Cloud-native Design  
 - Container-Orchestrierung  
-- Observability und Monitoring  
+- Observability & Monitoring  
 - Security Best Practices  
-- Infrastructure as Platform  
 - CI/CD Automatisierung  
 
 ---
 
-# Warum dieses Projekt für Unternehmen relevant ist
+# Relevanz für Unternehmen
 
-Dieses Projekt zeigt, dass:
+Dieses Projekt zeigt:
 
-- AI sicher intern betrieben werden kann  
-- Mitarbeiter spezialisierte AI Agents erstellen können  
-- Produktivität ohne externe Datenweitergabe steigt  
-- Microsoft Azure professionell genutzt wird  
-- Das System skalierbar und produktionsbereit ist  
+- AI kann sicher intern betrieben werden  
+- Spezialisierte AI Agents steigern Produktivität  
+- Microsoft Azure wird professionell eingesetzt  
+- Das System ist skalierbar und produktionsbereit  
 
 ---
 
 ## Kontakt
 
-Offen für Positionen im Bereich **AI Engineering · Cloud Engineering · Azure Architecture**.
+Offen für Positionen im Bereich  
+**AI Engineering · Cloud Engineering · Azure Architecture**
