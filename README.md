@@ -1,47 +1,15 @@
 # Syro AI Platform
 
-[![Azure](https://img.shields.io/badge/Microsoft%20Azure-0078D4?logo=microsoftazure&logoColor=white)](https://azure.microsoft.com/)
-[![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
-[![Next.js](https://img.shields.io/badge/Next.js-000000?logo=nextdotjs&logoColor=white)](https://nextjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)
-[![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-2088FF?logo=githubactions&logoColor=white)](https://github.com/features/actions)
-
----
-
 ## Enterprise AI-Agent Plattform auf Microsoft Azure
 
 **Cloud-native · Skalierbar · Produktionsbereit · DSGVO-orientiert**
 
 ---
 
-# Architektur (High-Level)
-
-```mermaid
-flowchart TB
-  U[User / Team] -->|HTTPS| FE[Frontend\nAzure Static Web Apps\nNext.js + TypeScript + Tailwind]
-  FE -->|REST API + JWT| BE[Backend API\nAzure Container Apps\nFastAPI (Python)]
-  BE --> DT[(Azure Data Tables)]
-  BE --> OAI[OpenAI API]
-  BE --> OBS[Application Insights\nLog Analytics]
-  OBS --> AL[Azure Monitor Alerts\nCPU > 80% / HTTP 5xx]
-
-  subgraph CI/CD
-    GH[GitHub Repository] --> GA[GitHub Actions]
-    GA --> ACR[(Azure Container Registry)]
-    ACR --> BE
-    GA --> FE
-
----
-
-# 🔷 BLOCK 2 – Vollständige README mit Screenshots (GitHub ready)
-
-# Executive Summary
+## Executive Summary
 
 Die **Syro AI Platform** ist eine produktionsreife AI-Agent-Plattform auf Microsoft Azure.  
-Sie ermöglicht Unternehmen, spezialisierte interne KI-Assistenten vollständig innerhalb der eigenen Cloud-Infrastruktur zu betreiben.
+Sie ermöglicht Unternehmen, spezialisierte interne KI-Assistenten zu erstellen und vollständig innerhalb der eigenen Cloud-Infrastruktur zu betreiben.
 
 Dieses Projekt demonstriert:
 
@@ -51,27 +19,27 @@ Dieses Projekt demonstriert:
 - Security- und Monitoring-Best-Practices  
 - Professionelle CI/CD-Implementierung  
 
-Ziel ist es, AI als kontrollierbares, skalierbares und geschäftsrelevantes Produktivitätswerkzeug einzusetzen.
+Ziel ist es, AI nicht als Experiment, sondern als **kontrollierbares, skalierbares und geschäftsrelevantes Produktivitätswerkzeug** einzusetzen.
 
 ---
 
 # Business Value
 
-## Herausforderungen in Unternehmen
+Viele Unternehmen stehen vor ähnlichen Herausforderungen:
 
-- Zeitverlust durch Debugging und Code-Recherche  
-- DevOps-Blocker  
-- Content-Erstellung im Marketing  
-- Datenschutzanforderungen  
-- Fehlende Integration in bestehende Cloud-Architekturen  
+- Entwickler verlieren Zeit bei Debugging und Code-Recherche  
+- DevOps-Fragen blockieren Projekte  
+- Marketing benötigt schnelle Content-Unterstützung  
+- Sensible Unternehmensdaten dürfen nicht extern gespeichert werden  
+- AI-Lösungen sind nicht in bestehende Cloud-Infrastrukturen integriert  
 
-## Lösung durch Syro
+### Lösung durch Syro
 
-- Interne AI Agents mit klarer Rolle  
-- Vollständiger Azure-Betrieb  
+- Interne AI Agents mit klar definierter Rolle  
+- Vollständiger Betrieb in Microsoft Azure  
 - Multi-User-System mit Authentifizierung  
-- Monitoring & Alerting  
-- Containerbasierte Skalierbarkeit  
+- Monitoring, Logging und Alerting  
+- Skalierbare container-basierte Architektur  
 
 **Ergebnis:** Höhere Produktivität bei voller Datenkontrolle.
 
@@ -79,19 +47,21 @@ Ziel ist es, AI als kontrollierbares, skalierbares und geschäftsrelevantes Prod
 
 # Konkretes Praxisbeispiel
 
-Ein Python Expert Agent wurde konfiguriert mit:
+Ein *Python Expert Agent* wurde mit folgendem System Prompt konfiguriert:
 
 > "Du bist ein Python Experte und schreibst sauberen, strukturierten Code."
 
-Anfrage:
+### Anfrage
 
 > "Erstelle mir eine Taschenrechner App mit GUI in Python."
 
-Ergebnis:
+### Ergebnis
 
-- Vollständiger tkinter-Code  
-- Strukturierte Erklärung  
-- Produktionsreifer Code  
+Der Agent:
+
+- Generierte vollständigen `tkinter`-Code  
+- Erklärte die Struktur des Programms  
+- Lieferte lauffähigen Produktionscode  
 
 ---
 
@@ -103,39 +73,51 @@ Ergebnis:
 
 ## Ausgeführte GUI-App
 
-![GUI App](./screenshots/calculator-gui.png)
+![Ausgeführte GUI-App](./screenshots/calculator-gui.png)
+
+Dieses Beispiel zeigt:
+
+- AI generiert funktionierenden Produktionscode  
+- Interne Developer Support Agents sind realisierbar  
+- AI kann als internes Produktivitätstool eingesetzt werden  
 
 ---
 
 # Business Use Cases
 
-## Developer Support Agent
+## 1. Developer Support Agent
+
 - Code generieren  
 - Bugs analysieren  
 - Best Practices erklären  
-- Architekturberatung  
+- Architekturfragen beantworten  
 
-## Azure DevOps Agent
-- CI/CD erklären  
-- Azure CLI Befehle generieren  
-- Container Deployments  
-- Monitoring & Alerts  
+## 2. Azure DevOps Agent
 
-## Marketing Agent
-- Kampagnenideen  
-- B2B Content  
-- Textoptimierung  
+- CI/CD-Workflows erklären  
+- Azure CLI Commands generieren  
+- Container Deployments unterstützen  
+- Monitoring und Alerts konfigurieren  
 
-## Sales Agent
-- Angebotsvorlagen  
-- Antworttexte  
-- Kundenkommunikation  
+## 3. Marketing Agent
+
+- Kampagnenideen entwickeln  
+- B2B Content generieren  
+- Texte optimieren  
+
+## 4. Sales Agent
+
+- Angebotsvorlagen erstellen  
+- Antworttexte formulieren  
+- Kundenkommunikation unterstützen  
 
 ---
 
-# Azure Architektur
+# Architektur Überblick
 
-## Verwendete Services
+Die gesamte Plattform läuft in **Microsoft Azure (Region: West Europe)**.
+
+## Verwendete Azure Services
 
 - Azure Container Apps  
 - Azure Container Registry  
@@ -149,17 +131,17 @@ Ergebnis:
 
 ## Ressourcenübersicht
 
-![Azure Resource Group](./screenshots/azure-resource-group.png)
+![Azure Ressourcenübersicht](./screenshots/azure-resource-group.png)
 
 ---
 
 ## Container App Übersicht
 
-![Container App](./screenshots/container-app-overview.png)
+![Container App Übersicht](./screenshots/container-app-overview.png)
 
 ---
 
-## Container Revision
+## Laufende Container Revision
 
 ![Container Revision](./screenshots/container-revision.png)
 
@@ -167,18 +149,21 @@ Ergebnis:
 
 ## Azure Container Registry
 
-![ACR](./screenshots/container-registry.png)
+![Azure Container Registry](./screenshots/container-registry.png)
 
 ---
 
-# Security
+# Authentifizierung und Security
 
-- Registrierung & Login  
-- bcrypt Passwort-Hashing  
+Implementierte Sicherheitsmechanismen:
+
+- Benutzerregistrierung  
+- Login-System  
+- Passwort-Hashing mit `bcrypt`  
 - JWT Token Authentifizierung  
-- GitHub Secrets  
-- Azure Container Secrets  
-- HTTPS-only  
+- Secrets via GitHub Secrets  
+- Secrets in Azure Container Apps  
+- HTTPS-only Deployment  
 
 ---
 
@@ -190,25 +175,33 @@ Ergebnis:
 
 ## Registrierung
 
-![Register](./screenshots/register.png)
+![Registrierung](./screenshots/register.png)
 
 ---
 
 # Agent System
 
+Benutzer können:
+
+- Eigene Agents erstellen  
+- System Prompts definieren  
+- Rollen und Verhalten konfigurieren  
+
+---
+
 ## Agent erstellen
 
-![Create Agent](./screenshots/create-agent.png)
+![Agent erstellen](./screenshots/create-agent.png)
 
 ---
 
 ## Agent Übersicht
 
-![Agent Overview](./screenshots/agent-overview.png)
+![Agent Übersicht](./screenshots/agent-overview.png)
 
 ---
 
-## Agent Detail
+## Agent Detail (Azure DevOps Agent)
 
 ![Agent Detail](./screenshots/agent-detail.png)
 
@@ -216,9 +209,12 @@ Ergebnis:
 
 # Dashboard
 
-- Gesamtanzahl Agents  
+Das Dashboard bietet:
+
+- Gesamtanzahl der Agents  
 - Weekly Usage  
 - System Status  
+- Plattform-Aktivität  
 
 ![Dashboard](./screenshots/dashboard.png)
 
@@ -226,20 +222,24 @@ Ergebnis:
 
 # Monitoring & Production Readiness
 
+Integriert:
+
 - Application Insights  
 - Request Monitoring  
 - Response Time Analyse  
 - Error Tracking  
 - Telemetrie  
-- Azure Alerts  
+- Azure Alert Regeln  
 
 ## Application Insights
 
-![App Insights](./screenshots/application-insights.png)
+![Application Insights](./screenshots/application-insights.png)
 
 ---
 
-## Azure Alerts
+## Aktivierte Metrik-Warnungen
+
+Konfigurierte Warnungen:
 
 - CPU > 80%  
 - HTTP 5xx Fehler  
@@ -248,12 +248,14 @@ Ergebnis:
 
 ---
 
-# CI/CD
+# CI/CD Pipeline
 
-## Frontend
-Azure Static Web Apps Deployment
+Zwei getrennte Workflows:
 
-## Backend
+### Frontend Deployment
+Azure Static Web Apps
+
+### Backend Pipeline
 Build → Docker Build → Push to ACR → Deploy Container App
 
 ![GitHub Actions](./screenshots/github-actions.png)
@@ -263,61 +265,66 @@ Build → Docker Build → Push to ACR → Deploy Container App
 # Tech Stack
 
 ## Backend
+
 - Python  
 - FastAPI  
 - SQLAlchemy  
 - Pydantic  
-- python-jose  
+- python-jose (JWT)  
 - bcrypt  
 - Azure Data Tables  
 - OpenAI API  
 
 ## Frontend
+
 - Next.js  
 - TypeScript  
 - TailwindCSS  
 
 ## Cloud
+
 - Azure Container Apps  
 - Azure Container Registry  
 - Azure Static Web Apps  
 - Azure Monitor  
-- Log Analytics  
+- Azure Log Analytics  
 - Application Insights  
 
 ## DevOps
+
 - Docker  
 - GitHub Actions  
-- CI/CD  
+- CI/CD Pipelines  
+- Containerization  
 
 ---
 
-# Demonstrierte Kompetenzen
+# Technische Kompetenzen, die dieses Projekt demonstriert
 
 - End-to-End SaaS Entwicklung  
-- Multi-User Architektur  
+- Multi-User-Architektur  
 - AI-Integration in produktiver Umgebung  
 - Cloud-native Design  
 - Container-Orchestrierung  
-- Observability  
+- Observability und Monitoring  
 - Security Best Practices  
+- Infrastructure as Platform  
 - CI/CD Automatisierung  
 
 ---
 
-# Relevanz für Unternehmen
+# Warum dieses Projekt für Unternehmen relevant ist
 
-Dieses Projekt zeigt:
+Dieses Projekt zeigt, dass:
 
-- AI kann sicher intern betrieben werden  
-- Spezialisierte AI Agents steigern Produktivität  
-- Azure wird professionell genutzt  
-- Das System ist skalierbar und produktionsbereit  
+- AI sicher intern betrieben werden kann  
+- Mitarbeiter spezialisierte AI Agents erstellen können  
+- Produktivität ohne externe Datenweitergabe steigt  
+- Microsoft Azure professionell genutzt wird  
+- Das System skalierbar und produktionsbereit ist  
 
 ---
 
 ## Kontakt
 
-Offen für Positionen im Bereich:
-
-**AI Engineering · Cloud Engineering · Azure Architecture**
+Offen für Positionen im Bereich **AI Engineering · Cloud Engineering · Azure Architecture**.
