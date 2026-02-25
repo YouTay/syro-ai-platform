@@ -44,6 +44,26 @@ Unternehmen stehen häufig vor folgenden Herausforderungen:
 Steigerung der Produktivität bei voller Datenkontrolle.
 
 ---
+## Architektur (High-Level)
+
+```mermaid
+flowchart TB
+  U["User / Team"] -->|HTTPS| FE["Frontend<br/>Azure Static Web Apps<br/>Next.js · TypeScript · TailwindCSS"]
+  FE -->|REST API| BE["Backend API<br/>Azure Container Apps<br/>FastAPI (Python)"]
+  BE -->|JWT Auth| AUTH["Auth Layer<br/>JWT · bcrypt"]
+  BE --> DT["Azure Data Tables"]
+  BE --> OAI["OpenAI API"]
+
+  BE --> OBS["Observability<br/>Application Insights · Log Analytics"]
+  OBS --> AL["Azure Monitor Alerts<br/>CPU > 80% · HTTP 5xx"]
+
+  subgraph CICD["CI/CD"]
+    GH["GitHub Repository"] --> GA["GitHub Actions"]
+    GA -->|Docker Build & Push| ACR["Azure Container Registry (ACR)"]
+    ACR -->|Deploy| BE
+    GA -->|Deploy| FE
+  end
+---
 
 # 2. Produkt-Demonstration (User Flow)
 
